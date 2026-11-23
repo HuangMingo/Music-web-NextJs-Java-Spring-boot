@@ -298,7 +298,7 @@ export function MusicProvider({ children }) {
   async function toggleFavouriteAlbum(event, albumId) {
     event.stopPropagation();
     if (!currentUser?.id || !albumId) {
-      showNotificationToast("Vui lÃ²ng Ä‘Äƒng nháº­p Ä‘á»ƒ thÃªm album yÃªu thÃ­ch");
+      showNotificationToast("Vui lòng đăng nhập để thêm album yêu thích");
       return null;
     }
 

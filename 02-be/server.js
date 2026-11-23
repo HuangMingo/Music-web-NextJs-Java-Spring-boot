@@ -46,9 +46,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 cloudinary.config({
-	cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'dnsne0dgp',
-	api_key: process.env.CLOUDINARY_API_KEY || '968498846331982',
-	api_secret: process.env.CLOUDINARY_API_SECRET || '3j8rjKuTnuk2vo-9Zh4SWUZIi14'
+	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET
 });
 app.post('/api/uploads/:type', upload.fields([{ name: 'file', maxCount: 1 }, { name: 'image', maxCount: 1 }]), async (req, res) => {
 	const file = req.files?.file?.[0] || req.files?.image?.[0];

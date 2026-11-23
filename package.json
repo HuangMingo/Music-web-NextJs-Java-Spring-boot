@@ -8,8 +8,10 @@
   "type": "module",
   "main": "eslint.config.js",
   "scripts": {
-    "start": "nodemon 02-be/server.js",
-    "dev": "vite",
+    "start": "npm --prefix 02-be start",
+    "dev": "pnpm --parallel --filter music-player-react --filter music-player-backend run dev:web",
+    "dev:web": "pnpm run dev:frontend",
+    "dev:frontend": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"

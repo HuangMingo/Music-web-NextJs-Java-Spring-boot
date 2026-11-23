@@ -1,0 +1,10 @@
+{
+  "name": "music-player-backend",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:web": "pnpm run start",
+    "start": "nodemon server.js"
+  }
+}

@@ -1,0 +1,5 @@
+packages:
+  - '02-be'
+
+includeWorkspaceRoot: true
+verifyDepsBeforeRun: false

@@ -26,6 +26,7 @@ Cài sẵn:
 
 - Node.js
 - npm
+- pnpm
 - PostgreSQL database hoặc một database PostgreSQL online như Neon
 
 ## Cài đặt
@@ -59,22 +60,18 @@ Nếu không upload file, thông tin Cloudinary có thể chưa cần chỉnh ng
 
 ## Chạy local
 
-Mở terminal thứ nhất để chạy backend:
+`pnpm` dùng workspace để chạy các script. Cài dependency bằng `npm install` theo hướng dẫn ở trên.
+
+Chạy frontend và backend cùng lúc từ thư mục gốc:
 
 ```bash
-npm start
+pnpm dev
 ```
 
 Backend chạy tại:
 
 ```txt
 http://localhost:3000
-```
-
-Mở terminal thứ hai để chạy frontend:
-
-```bash
-npm run dev
 ```
 
 Frontend thường chạy tại:
@@ -88,16 +85,16 @@ Sau đó mở `http://localhost:5173` trên trình duyệt.
 ## Các script thường dùng
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
-Chạy frontend ở chế độ development.
+Chạy frontend và backend ở chế độ development.
 
 ```bash
 npm start
 ```
 
-Chạy backend Express.
+Chạy riêng backend Express. Có thể chạy lệnh này từ thư mục gốc hoặc trong `02-be`.
 
 ```bash
 npm run build
@@ -150,3 +147,11 @@ src/api.js          Cấu hình API URL cho frontend
 11/7/2026
 - Xử lí việc chuyển đổi sang HTTP Range request
 - Nghiên cứu liệu Nodejs có phù hợp không. có thể chuyển đổi sang kiểu khác không
+
+### 23/11/2026 — Các điểm cần cải thiện
+
+- **Phát nhạc.** Đo thời gian từ lúc bấm Play đến khi có tiếng và kiểm tra thao tác tua. Với bài hát công khai, thử phát trực tiếp từ CDN Cloudinary. Nếu giữ proxy Express, dùng `pipeline()` để chuyển tiếp audio ngay khi nhận được và xem xét cache metadata để giảm số lần gọi `HEAD`.
+- **Trạng thái yêu thích.** Gộp các request kiểm tra từng bài trên trang Khám phá thành một request và một truy vấn PostgreSQL cho cả danh sách bài hát.
+- **Top 10 và trang Khám phá.** Thử cache Top 10 trong 30–60 giây. Với một tiến trình Express, có thể dùng cache trong bộ nhớ. Cân nhắc Redis khi cần chia sẻ cache giữa nhiều instance. Đo chi phí của `ORDER BY RANDOM()` trước khi cache danh sách ngẫu nhiên, vì người dùng sẽ thấy cùng một danh sách trong thời gian cache còn hiệu lực.
+- **Tìm kiếm.** Kiểm tra các truy vấn `unaccent(...) ILIKE` bằng `EXPLAIN (ANALYZE, BUFFERS)`. Nếu truy vấn chậm, cân nhắc cột tìm kiếm đã bỏ dấu với index GIN dùng `pg_trgm`. Hủy request gợi ý cũ khi người dùng nhập từ khóa mới.
+- **Đo hiệu năng.** Ghi lại độ trễ API ở phân vị 95 (p95) và thời gian bắt đầu phát nhạc trước và sau mỗi thay đổi để so sánh.
